@@ -25,7 +25,7 @@ public class MessageController {
         }});
 
         add(new HashMap<String, String>() {{
-            put("id", "2");
+            put("id", "3");
             put("text", "by by");
         }});
     }};
