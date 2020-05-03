@@ -26,6 +26,9 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 
+	compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+	compile('org.springframework.session:spring-session-jdbc')
+
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.0.RELEASE')
 
