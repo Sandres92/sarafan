@@ -1,38 +1,40 @@
 <template>
-    <div>
-        <input type="text" placeholder="write something" v-model="text"/>
-        <input type="button" value="save" @click="save"/>
-    </div>
+    <v-layout row>
+        <v-text-field
+                label="new message"
+                placeholder="write something"
+                v-model="text"/>
+        <v-btn @click="save">
+            save
+        </v-btn>
+    </v-layout>
 </template>
 
 <script>
-    function getIndex(list, id) {
-        for (var i = 0; i < list.length; i++) {
-            if (list[i].id === id) {
-                return i
-            }
-        }
-
-        return -1
-    }
+    import {sendMessage} from 'util/ws'
 
     export default {
         props: ['messages', 'messageAtr'],
-        data () {
+        data() {
             return {
                 text: '',
                 id: ''
             }
         },
         watch: {
-            messageAtr (newVal, oldVal) {
+            messageAtr(newVal, oldVal) {
                 this.text = newVal.text
                 this.id = newVal.id
             }
         },
         methods: {
-            save () {
-                const message = {text: this.text}
+            save() {
+                sendMessage({id: this.id, text: this.text})
+
+                this.id = ''
+                this.text = ''
+
+                /*const message = {text: this.text}
 
                 if (this.id) {
                     this.$resource('/message{/id}').update({id: this.id}, message).then(result =>
@@ -53,7 +55,7 @@
                             this.text = ''
                         })
                     )
-                }
+                }*/
             }
         }
     }
