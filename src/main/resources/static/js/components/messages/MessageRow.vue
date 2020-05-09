@@ -28,10 +28,6 @@
             },
 
             del() {
-                console.log("==== bbb =====")
-                console.log(this.message.id)
-                console.log(this.message.text)
-
                 this.removeMessageAction(this.message)
             }
         }
