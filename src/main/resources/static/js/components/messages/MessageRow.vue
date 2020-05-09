@@ -16,16 +16,23 @@
 </template>
 
 <script>
+    import {mapActions} from 'vuex'
+
     export default {
-        props: ['message', 'editMessage', 'deleteMessage', 'messages'],
+        props: ['message', 'editMessage'],
 
         methods: {
+            ...mapActions(['removeMessageAction']),
             edit() {
                 this.editMessage(this.message)
             },
 
             del() {
-                this.deleteMessage(this.message)
+                console.log("==== bbb =====")
+                console.log(this.message.id)
+                console.log(this.message.text)
+
+                this.removeMessageAction(this.message)
             }
         }
     }
