@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView(Views.idName.class)
+    @JsonView(Views.id.class)
     private Long id;
 
     @JsonView(Views.idName.class)
@@ -21,6 +21,7 @@ public class Message {
 
     @Column(updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    @JsonView(Views.fullMessage.class)
     private LocalDateTime creationDate;
 
     public Long getId() {
