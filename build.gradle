@@ -37,6 +37,8 @@ dependencies {
 	compile('org.postgresql:postgresql')
 	compile('org.projectlombok:lombok')
 	compile('javax.xml.bind:jaxb-api')
+
+	compile 'org.jsoup:jsoup:1.13.1'
 }
 
 test {

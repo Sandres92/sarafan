@@ -20,7 +20,7 @@
             MessageRow,
             MessageForm
         },
-        data() {
+        data() { 
             return {
                 message: null
             }
