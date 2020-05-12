@@ -8,6 +8,6 @@ public final class Views {
     public interface idName extends id {
     }
 
-    public interface fullMessage extends id {
+    public interface fullMessage extends idName {
     }
 }
