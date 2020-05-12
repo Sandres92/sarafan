@@ -15,7 +15,6 @@
                 const a = elem.scrollTop + window.innerHeight
 
                 if (isButtonOfScreen) {
-                    console.log("yess !!!!!!! ")
                     this.loadPageAction()
                 }
             }

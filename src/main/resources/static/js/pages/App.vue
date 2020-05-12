@@ -11,7 +11,7 @@
             <v-spacer></v-spacer>
 
             <v-tab v-if="profile"
-                   :disabled="$route.path === '/profile'"
+                   :disabled="$route.path === '/user'"
                    @click="shoProfile"> {{profile.name}}
             </v-tab>
 
@@ -48,7 +48,7 @@
                 this.$router.push('/')
             },
             shoProfile() {
-                this.$router.push('/profile')
+                this.$router.push('/user')
             }
         },
         created() {

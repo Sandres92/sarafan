@@ -1,7 +1,7 @@
 package com.kor.sarafan.domain;
 
 public final class Views {
-    public interface id{
+    public interface id {
 
     }
 
@@ -12,5 +12,8 @@ public final class Views {
     }
 
     public interface fullMessage extends idName {
+    }
+
+    public interface fullProfile extends idName {
     }
 }

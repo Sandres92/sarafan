@@ -1,18 +1,19 @@
 package com.kor.sarafan.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "usr")
 @Data
+@EqualsAndHashCode(of = {"id"})
 public class User implements Serializable {
     @Id
     @JsonView(Views.idName.class)
@@ -22,10 +23,41 @@ public class User implements Serializable {
     @JsonView(Views.idName.class)
     private String userpic;
     private String email;
+    @JsonView(Views.fullProfile.class)
     private String gender;
+    @JsonView(Views.fullProfile.class)
     private String locale;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    @JsonView(Views.fullProfile.class)
     private LocalDateTime lastVisit;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_subscriptions",
+            joinColumns = @JoinColumn(name = "subscribers_id"),
+            inverseJoinColumns = @JoinColumn(name = "channel_id")
+    )
+    @JsonView(Views.fullProfile.class)
+    @JsonIdentityReference
+    @JsonIdentityInfo(
+            property = "id",
+            generator = ObjectIdGenerators.PropertyGenerator.class
+    )
+    private Set<User> subscriptions = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_subscriptions",
+            joinColumns = @JoinColumn(name = "channel_id"),
+            inverseJoinColumns = @JoinColumn(name = "subscribers_id")
+    )
+    @JsonView(Views.fullProfile.class)
+    @JsonIdentityReference
+    @JsonIdentityInfo(
+            property = "id",
+            generator = ObjectIdGenerators.PropertyGenerator.class
+    )
+    private Set<User> subscribers = new HashSet<>();
 
     public String getId() {
         return id;
@@ -81,5 +113,21 @@ public class User implements Serializable {
 
     public void setLastVisit(LocalDateTime lastVisit) {
         this.lastVisit = lastVisit;
+    }
+
+    public Set<User> getSubscriptions() {
+        return subscriptions;
+    }
+
+    public void setSubscriptions(Set<User> subscriptions) {
+        this.subscriptions = subscriptions;
+    }
+
+    public Set<User> getSubscribers() {
+        return subscribers;
+    }
+
+    public void setSubscribers(Set<User> subscribers) {
+        this.subscribers = subscribers;
     }
 }
