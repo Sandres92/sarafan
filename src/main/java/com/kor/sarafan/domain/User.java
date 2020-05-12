@@ -3,6 +3,7 @@ package com.kor.sarafan.domain;
 import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Table(name = "usr")
 @Data
 @EqualsAndHashCode(of = {"id"})
+@ToString(of = {"id", "name"})
 public class User implements Serializable {
     @Id
     @JsonView(Views.idName.class)
@@ -31,33 +33,18 @@ public class User implements Serializable {
     @JsonView(Views.fullProfile.class)
     private LocalDateTime lastVisit;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_subscriptions",
-            joinColumns = @JoinColumn(name = "subscribers_id"),
-            inverseJoinColumns = @JoinColumn(name = "channel_id")
-    )
     @JsonView(Views.fullProfile.class)
-    @JsonIdentityReference
-    @JsonIdentityInfo(
-            property = "id",
-            generator = ObjectIdGenerators.PropertyGenerator.class
-    )
-    private Set<User> subscriptions = new HashSet<>();
+    @OneToMany(
+            mappedBy = "subscriber",
+            orphanRemoval = true)
+    private Set<UserSubscrioption> subscriptions = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_subscriptions",
-            joinColumns = @JoinColumn(name = "channel_id"),
-            inverseJoinColumns = @JoinColumn(name = "subscribers_id")
-    )
     @JsonView(Views.fullProfile.class)
-    @JsonIdentityReference
-    @JsonIdentityInfo(
-            property = "id",
-            generator = ObjectIdGenerators.PropertyGenerator.class
-    )
-    private Set<User> subscribers = new HashSet<>();
+    @OneToMany(
+            mappedBy = "channel",
+            orphanRemoval = true,
+            cascade = CascadeType.ALL)
+    private Set<UserSubscrioption> subscribers = new HashSet<>();
 
     public String getId() {
         return id;
@@ -115,19 +102,19 @@ public class User implements Serializable {
         this.lastVisit = lastVisit;
     }
 
-    public Set<User> getSubscriptions() {
+    public Set<UserSubscrioption> getSubscriptions() {
         return subscriptions;
     }
 
-    public void setSubscriptions(Set<User> subscriptions) {
+    public void setSubscriptions(Set<UserSubscrioption> subscriptions) {
         this.subscriptions = subscriptions;
     }
 
-    public Set<User> getSubscribers() {
+    public Set<UserSubscrioption> getSubscribers() {
         return subscribers;
     }
 
-    public void setSubscribers(Set<User> subscribers) {
+    public void setSubscribers(Set<UserSubscrioption> subscribers) {
         this.subscribers = subscribers;
     }
 }

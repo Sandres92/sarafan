@@ -2,12 +2,14 @@ package com.kor.sarafan.service;
 
 import com.kor.sarafan.domain.Message;
 import com.kor.sarafan.domain.User;
+import com.kor.sarafan.domain.UserSubscrioption;
 import com.kor.sarafan.domain.Views;
 import com.kor.sarafan.dto.EventType;
 import com.kor.sarafan.dto.MessagePageDto;
 import com.kor.sarafan.dto.MetaDto;
 import com.kor.sarafan.dto.ObjectType;
 import com.kor.sarafan.repo.MessageRepo;
+import com.kor.sarafan.repo.UserSubscriptionRepo;
 import com.kor.sarafan.util.WsSender;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -21,9 +23,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class MessageService {
@@ -33,13 +37,13 @@ public class MessageService {
     private static Pattern URL_REGEX = Pattern.compile(URL_PETTERN, Pattern.CASE_INSENSITIVE);
     private static Pattern IMG_REGEX = Pattern.compile(IMG_PETTERN, Pattern.CASE_INSENSITIVE);
 
-    @Autowired
-    private MessageRepo messageRepo;
-
+    private final MessageRepo messageRepo;
+    private final UserSubscriptionRepo userSubscriptionRepo;
     private final BiConsumer<EventType, Message> wsSender;
 
-    public MessageService(MessageRepo messageRepo, WsSender wsSender) {
+    public MessageService(MessageRepo messageRepo, UserSubscriptionRepo userSubscriptionRepo, WsSender wsSender) {
         this.messageRepo = messageRepo;
+        this.userSubscriptionRepo = userSubscriptionRepo;
         this.wsSender = wsSender.getSender(ObjectType.MESSAGE, Views.idName.class);
     }
 
@@ -109,8 +113,15 @@ public class MessageService {
         wsSender.accept(EventType.REMOVE, message);
     }
 
-    public MessagePageDto findAll(Pageable pageable) {
-        Page<Message> page = messageRepo.findAll(pageable);
+    public MessagePageDto findForUser(Pageable pageable, User user) {
+        List<User> channels = userSubscriptionRepo.findBySubscriber(user)
+                .stream()
+                .map(UserSubscrioption::getChannel)
+                .collect(Collectors.toList());
+
+        channels.add(user);
+
+        Page<Message> page = messageRepo.findByAuthorIn(channels, pageable);
         return new MessagePageDto(page.getContent(), pageable.getPageNumber(), page.getTotalPages());
     }
 }

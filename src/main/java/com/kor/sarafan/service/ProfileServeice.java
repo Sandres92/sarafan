@@ -2,6 +2,7 @@ package com.kor.sarafan.service;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.kor.sarafan.domain.User;
+import com.kor.sarafan.domain.UserSubscrioption;
 import com.kor.sarafan.domain.Views;
 import com.kor.sarafan.repo.UserDetailRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ProfileServeice {
@@ -21,12 +24,16 @@ public class ProfileServeice {
     }
 
     public User changeSubscription(User channel, User subscriber) {
-        Set<User> subscribers = channel.getSubscribers();
+        List<UserSubscrioption> subscribtions = channel.getSubscribers()
+                .stream()
+                .filter(subscribtion -> subscriber.getSubscribers().equals(subscriber))
+                .collect(Collectors.toList());
 
-        if (subscribers.contains(subscriber)) {
-            subscribers.remove(subscriber);
+        if (subscribtions.contains(subscriber)) {
+            UserSubscrioption subscription = new UserSubscrioption(channel, subscriber);
+            channel.getSubscribers().add(subscription);
         } else {
-            subscribers.add(subscriber);
+            channel.getSubscribers().removeAll(subscribtions);
         }
 
         return userDetailRepo.save(channel);
