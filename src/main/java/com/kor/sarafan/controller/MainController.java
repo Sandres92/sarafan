@@ -5,9 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.kor.sarafan.domain.User;
 import com.kor.sarafan.domain.Views;
+import com.kor.sarafan.dto.MessagePageDto;
 import com.kor.sarafan.repo.MessageRepo;
+import com.kor.sarafan.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,12 +23,12 @@ import java.util.HashMap;
 @Controller
 @RequestMapping("/")
 public class MainController {
-    private final MessageRepo messageRepo;
+    private final MessageService messageService;
     private final ObjectMapper objectMapper;
     private final ObjectWriter objectWriter;
 
-    public MainController(MessageRepo messageRepo, ObjectMapper objectMapper) {
-        this.messageRepo = messageRepo;
+    public MainController(MessageService messageService, ObjectMapper objectMapper) {
+        this.messageService = messageService;
         this.objectMapper = objectMapper;
 
         this.objectWriter = objectMapper
@@ -41,10 +45,17 @@ public class MainController {
 
         if (user != null) {
             data.put("profile", user);
-            String messages = objectWriter.writeValueAsString(messageRepo.findAll());
+
+            Sort sort = Sort.by(Sort.Direction.DESC, "id");
+            PageRequest pageRequest = PageRequest.of(0, MessageController.MESSAGES_PER_PAGE, sort);
+            MessagePageDto messagePageDto = messageService.findAll(pageRequest);
+
+            String messages = objectWriter.writeValueAsString(messagePageDto.getMessages());
+
             model.addAttribute("messages", messages);
-        }
-        else {
+            data.put("currentPage", messagePageDto.getCurrentPage());
+            data.put("totalPage", messagePageDto.getTotalPage());
+        } else {
             model.addAttribute("messages", "[]");
         }
 
