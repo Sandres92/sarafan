@@ -1,7 +1,6 @@
 package com.kor.sarafan.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -11,6 +10,10 @@ import java.util.List;
 @Entity
 @Table
 @Data
+/*@JsonIdentityInfo( // уберает циклическую сеарелизацию
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id"
+)*/
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,6 +35,7 @@ public class Message {
 
     @OneToMany(mappedBy = "message", orphanRemoval = true)
     @JsonView(Views.fullMessage.class)
+    //@JsonManagedReference //УБЕРАЕТ ЦИКЛИЧЕСКИЕ ССЫЛКИ
     private List<Comment> comments;
 
     @JsonView(Views.fullMessage.class)

@@ -44,6 +44,9 @@ public class MainController {
             String messages = objectWriter.writeValueAsString(messageRepo.findAll());
             model.addAttribute("messages", messages);
         }
+        else {
+            model.addAttribute("messages", "[]");
+        }
 
         model.addAttribute("frontendData", data);
         model.addAttribute("isDevMode", "dev".equals(profile));

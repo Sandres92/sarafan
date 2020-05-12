@@ -8,6 +8,9 @@ public final class Views {
     public interface idName extends id {
     }
 
+    public interface fullComment extends idName {
+    }
+
     public interface fullMessage extends idName {
     }
 }

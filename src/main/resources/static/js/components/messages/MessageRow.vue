@@ -1,8 +1,25 @@
 <template>
-    <v-card class="my-2">
-        <v-card-text primary-tittle>
-            <i>({{message.id}})</i>{{message.text}}
-        </v-card-text>
+    <v-card>
+        <div  class="my-2">
+            <v-avatar
+                    v-if="message.author && message.author.userpic"
+                    size="200px">
+                <img
+                        :src="message.author.userpic"
+                        :alt="message.author.name">
+            </v-avatar>
+            <v-avatar v-else
+                      color="indigo"
+                      size="36px">
+                <v-icon dark>mdi-account-circle</v-icon>
+            </v-avatar>
+            <span class="pl-3">{{authorName}}</span>
+        </div>
+        <div class="pt-3">
+            <v-card-text primary-tittle>
+                {{message.text}}
+            </v-card-text>
+        </div>
         <media v-if="message.link" :message="message"></media>
         <v-card-actions>
             <v-btn @click="edit" small text rounded>
@@ -29,6 +46,11 @@
         components: {
             CommentList,
             Media
+        },
+        computed: {
+            authorName() {
+                return this.message.author ? this.message.author.name : 'unlnown'
+            }
         },
         methods: {
             ...mapActions(['removeMessageAction']),

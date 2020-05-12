@@ -1,5 +1,6 @@
 package com.kor.sarafan.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,11 +22,13 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "mesasge_id")
+    @JsonView(Views.fullComment.class)
+    //@JsonBackReference //УБЕРАЕТ ЦИКЛИЧЕСКИЕ ССЫЛКИ
     private Message message;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
-    @JsonView(Views.fullMessage.class)
+    @JsonView(Views.idName.class)
     private User author;
 
     public Long getId() {
