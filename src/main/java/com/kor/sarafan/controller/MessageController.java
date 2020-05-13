@@ -6,6 +6,7 @@ import com.kor.sarafan.domain.User;
 import com.kor.sarafan.domain.Views;
 import com.kor.sarafan.dto.MessagePageDto;
 import com.kor.sarafan.service.MessageService;
+import io.sentry.Sentry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -41,11 +42,13 @@ public class MessageController {
     }
 
     @PostMapping
+    @JsonView(Views.fullMessage.class)
     public Message create(@RequestBody Message message, @AuthenticationPrincipal User user) throws IOException {
         return messageService.create(message, user);
     }
 
     @PutMapping("{id}")
+    @JsonView(Views.fullMessage.class)
     public Message update(@PathVariable("id") Message messageFromDb, @RequestBody Message message) throws IOException {
         return messageService.update(messageFromDb, message);
     }

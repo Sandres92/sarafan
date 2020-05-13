@@ -14,13 +14,14 @@
 <script>
 
     import {mapActions} from 'vuex'
+    import * as Sentry from '@sentry/browser'
 
     export default {
         props: ['messageAtr'],
         data() {
             return {
-                text: '',
-                id: ''
+                id: null,
+                text: ''
             }
         },
         watch: {
@@ -33,6 +34,7 @@
             ...mapActions(['addMessageAction', 'updateMessageAction']),
 
             save() {
+                //Sentry.captureMessage('start editing'); //это вывидется в Sentry
 
                 const message = {id: this.id, text: this.text}
 
@@ -43,8 +45,10 @@
                     this.addMessageAction(message)
                 }
 
-                this.id = ''
+                this.id = null
                 this.text = ''
+
+                //throw new Error('bang!!') //это вывидется в Sentry как ошибка
             }
         }
     }

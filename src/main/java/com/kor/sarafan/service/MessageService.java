@@ -44,7 +44,7 @@ public class MessageService {
     public MessageService(MessageRepo messageRepo, UserSubscriptionRepo userSubscriptionRepo, WsSender wsSender) {
         this.messageRepo = messageRepo;
         this.userSubscriptionRepo = userSubscriptionRepo;
-        this.wsSender = wsSender.getSender(ObjectType.MESSAGE, Views.idName.class);
+        this.wsSender = wsSender.getSender(ObjectType.MESSAGE, Views.fullMessage.class);
     }
 
     private void fillMeta(Message message) throws IOException {
@@ -97,7 +97,8 @@ public class MessageService {
     }
 
     public Message update(Message messageFromDb, Message message) throws IOException {
-        BeanUtils.copyProperties(message, messageFromDb, "id");
+        messageFromDb.setText(message.getText());
+
         fillMeta(message);
 
         Message updateMessage = messageRepo.save(messageFromDb);
