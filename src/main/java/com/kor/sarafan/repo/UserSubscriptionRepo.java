@@ -9,4 +9,8 @@ import java.util.List;
 
 public interface UserSubscriptionRepo extends JpaRepository<UserSubscrioption, UserSubscriptionId> {
     List<UserSubscrioption> findBySubscriber(User user);
+
+    List<UserSubscrioption> findByChannel(User channel);
+
+    UserSubscrioption findByChannelAndSubscriber(User channel, User subscriber);
 }

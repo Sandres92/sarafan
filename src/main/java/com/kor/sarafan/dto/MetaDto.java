@@ -11,12 +11,6 @@ public class MetaDto {
     private String description;
     private String cover;
 
-    public MetaDto(String title, String description, String cover) {
-        this.title = title;
-        this.description = description;
-        this.cover = cover;
-    }
-
     public String getTitle() {
         return title;
     }

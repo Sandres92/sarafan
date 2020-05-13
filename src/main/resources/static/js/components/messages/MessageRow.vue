@@ -1,6 +1,6 @@
 <template>
     <v-card>
-        <user-link :user="message.author" size="48"></user-link>
+        <user-link :user="message.author" :size="48"></user-link>
         <div class="pt-3">
             <v-card-text primary-tittle>
                 {{message.text}}

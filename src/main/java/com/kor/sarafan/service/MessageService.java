@@ -108,7 +108,6 @@ public class MessageService {
     }
 
     public void delete(Message message) {
-        System.out.println("test   " + message.getId() + "   " + message.getText());
         messageRepo.delete(message);
         wsSender.accept(EventType.REMOVE, message);
     }
@@ -116,12 +115,14 @@ public class MessageService {
     public MessagePageDto findForUser(Pageable pageable, User user) {
         List<User> channels = userSubscriptionRepo.findBySubscriber(user)
                 .stream()
+                .filter(UserSubscrioption::isActive)
                 .map(UserSubscrioption::getChannel)
                 .collect(Collectors.toList());
 
         channels.add(user);
 
-        Page<Message> page = messageRepo.findByAuthorIn(channels, pageable);
+        //Page<Message> page = messageRepo.findByAuthorIn(channels, pageable);
+        Page<Message> page = messageRepo.findAll(pageable);
         return new MessagePageDto(page.getContent(), pageable.getPageNumber(), page.getTotalPages());
     }
 }
