@@ -1,9 +1,9 @@
 plugins {
-	id 'org.springframework.boot' version '2.2.6.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.2.6.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
 
-	id "com.moowork.node" version "1.3.1"
+    id "com.moowork.node" version "1.3.1"
 }
 
 group = 'com.kor'
@@ -11,15 +11,15 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 configurations {
-	developmentOnly
-	runtimeClasspath {
-		extendsFrom developmentOnly
-	}
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
 }
 
 task buildFront(type: YarnTask) {
-	// add the express package only
-	args = ['build']
+    // add the express package only
+    args = ['build']
 }
 
 yarn_install.dependsOn(yarn_cache_clean)
@@ -27,37 +27,41 @@ buildFront.dependsOn(yarn_install)
 processResources.dependsOn(buildFront)
 
 repositories {
-	mavenCentral()
+    mavenCentral()
+}
+
+node {
+    download = true
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
 
-	compile("org.springframework.boot:spring-boot-starter-thymeleaf")
-	compile("org.springframework.boot:spring-boot-starter-websocket")
-	//compile('org.springframework.session:spring-session-jdbc')
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile("org.springframework.boot:spring-boot-starter-websocket")
+    //compile('org.springframework.session:spring-session-jdbc')
 
-	compile('org.springframework.boot:spring-boot-starter-security')
-	compile('org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.0.RELEASE')
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.0.RELEASE')
 
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile('org.postgresql:postgresql')
-	//compile('org.projectlombok:lombok')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.postgresql:postgresql')
+    //compile('org.projectlombok:lombok')
 
-	compileOnly 'org.projectlombok:lombok:1.18.12'
-	annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
 
-	compile('javax.xml.bind:jaxb-api')
+    compile('javax.xml.bind:jaxb-api')
 
-	compile 'org.jsoup:jsoup:1.13.1'
+    compile 'org.jsoup:jsoup:1.13.1'
 
-	compile 'io.sentry:sentry-spring:1.7.30'
+    compile 'io.sentry:sentry-spring:1.7.30'
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
