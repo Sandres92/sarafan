@@ -29,8 +29,8 @@
 
 <script>
     import {mapState, mapMutations} from 'vuex'
-    import MessagesList from 'pages/MessageList.vue'
-    import {addHandler} from 'util/ws';
+    import MessagesList from 'js/pages/MessageList.vue'
+    import {addHandler} from 'js/util/ws';
 
     export default {
         components: {

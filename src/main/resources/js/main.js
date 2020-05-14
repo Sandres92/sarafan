@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import '@babel/polyfill'
-import 'api/resource'
+import 'js/api/resource'
 import router from "./router/router";
 import 'vuetify/dist/vuetify.min.css'
-import App from 'pages/App.vue'
+import App from 'js/pages/App.vue'
 import {connect} from './util/ws'
-import store from 'store/store'
+import store from 'js/store/store'
 
 import * as Sentry from '@sentry/browser'
 import {Vue as VueIntegration} from '@sentry/integrations'

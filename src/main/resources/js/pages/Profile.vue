@@ -33,7 +33,7 @@
 </template>
 
 <script>
-    import profileApi from 'api/profile'
+    import profileApi from 'js/api/profile'
 
     export default {
         name: "Profile",
