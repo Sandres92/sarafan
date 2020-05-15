@@ -1,6 +1,7 @@
 <template>
     <v-app>
         <v-app-bar app>
+            hello
             <v-toolbar-title>sarafan</v-toolbar-title>
             <v-tab v-if="profile"
                    :disabled="$route.path === '/'"
